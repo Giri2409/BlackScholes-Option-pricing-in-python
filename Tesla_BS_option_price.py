@@ -53,10 +53,14 @@ df=df.dropna()
 df = df.assign(close_day_before=df.Close.shift(1))
 df['returns'] = ((df.Close - df.close_day_before)/df.close_day_before)
 
+#Sigma:The sigma value is derived by multiplying the standard deviation of the stock returns over the past year by the square root of 252 (number of days the market is open over a year). 
+
 sigma = np.sqrt(252) * df['returns'].std()
 
 #Treasury Yield 10 Years (^TNX)  - riskfree rate of return
 #iloc function helps to select a specific row or column from dataset
+##Risk free rate of return source: 10-year U.S. treasury yield from yahoo Finance( ^TNX).
+#Source of stock price for past 1 year: Yahoo Finance
 
 r = (web.DataReader(
     "^TNX", 'yahoo', today.replace(day=today.day-1), today)['Close'].iloc[-1])/100
